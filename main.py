@@ -532,26 +532,28 @@ def run():
     rows: list[RepoRow] = []
 
     for i, it in enumerate(seeds[:MAX_REPOS_TOTAL], start=1):
-    data = it  # use Search API item directly (rate limit safe)
+        data = it  # use Search API item directly (rate limit safe)
 
-    full = data.get("full_name", "")
-    if not full:
+        full = data.get("full_name", "")
+        if not full:
         continue
 
     # Fields available in search item
-    stars = safe_int(data.get("stargazers_count"))
-    forks = safe_int(data.get("forks_count"))
-    open_issues = safe_int(data.get("open_issues_count"))
-    default_branch = data.get("default_branch") or "main"
-    pushed_at = data.get("pushed_at") or data.get("updated_at") or utc_now().isoformat()
+        stars = safe_int(data.get("stargazers_count"))
+        forks = safe_int(data.get("forks_count"))
+        open_issues = safe_int(data.get("open_issues_count"))
+        default_branch = data.get("default_branch") or "main"
+        pushed_at = data.get("pushed_at") or data.get("updated_at") or utc_now().isoformat()
 
-    pushed_dt = iso_to_dt(pushed_at)
-    dslc = days_since(pushed_dt)
+        pushed_dt = iso_to_dt(pushed_at)
+        dslc = days_since(pushed_dt)
 
-    risk_score, flags = compute_risk(stars, open_issues, dslc)
+    # Deterministic risk (search-item-safe)
+        risk_score, flags = compute_risk(stars, open_issues, dslc)
 
-    # NOTE: search items do not include subscribers_count reliably; use stars as a proxy
-    watchers = stars
+    # NOTE: search items do not include subscribers_count reliably
+        watchers = stars
+
 
        
 
