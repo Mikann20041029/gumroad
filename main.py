@@ -118,12 +118,12 @@ class RepoRow:
     updated_at_run: str
 
 
-def search_seeds() -> list[str]:
+def search_seeds() -> list[dict]:
     """
     Build seeds from GitHub Search (stars-desc per language).
-    No manual curation required.
+    Return the *search items themselves* to avoid extra /repos calls (rate limit safe).
     """
-    seeds: list[str] = []
+    seeds: list[dict] = []
     seen = set()
 
     for lang in LANGUAGES:
@@ -149,7 +149,7 @@ def search_seeds() -> list[str]:
                 if not full or full in seen:
                     continue
                 seen.add(full)
-                seeds.append(full)
+                seeds.append(it)  # store item dict (not full_name string)
                 collected += 1
                 if collected >= PER_LANG:
                     break
@@ -158,6 +158,7 @@ def search_seeds() -> list[str]:
             time.sleep(REQUEST_SLEEP_SEC)
 
     return seeds[:MAX_REPOS_TOTAL]
+
 
 
 def compute_risk(repo: dict) -> tuple[int, list[str], str]:
