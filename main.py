@@ -536,7 +536,7 @@ def run():
 
         full = data.get("full_name", "")
         if not full:
-        continue
+    continue
 
     # Fields available in search item
         stars = safe_int(data.get("stargazers_count"))
