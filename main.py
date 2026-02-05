@@ -538,7 +538,7 @@ def run():
         if not full:
             continue
 
-    # Fields available in search item
+            # Fields available in search item
         stars = safe_int(data.get("stargazers_count"))
         forks = safe_int(data.get("forks_count"))
         open_issues = safe_int(data.get("open_issues_count"))
@@ -548,11 +548,8 @@ def run():
         pushed_dt = iso_to_dt(pushed_at)
         dslc = days_since(pushed_dt)
 
-    # Deterministic risk (search-item-safe)
-        risk_score, flags = compute_risk(stars, open_issues, dslc)
 
-    # NOTE: search items do not include subscribers_count reliably
-        watchers = stars
+    
 
 
        
@@ -560,6 +557,8 @@ def run():
 
         # Compute deterministic risk
         score, flags, action = compute_risk(data)
+        watchers = safe_int(data.get("stargazers_count"))
+
 
         license_obj = data.get("license") or {}
         license_spdx = safe_str(license_obj.get("spdx_id", "")).strip()
