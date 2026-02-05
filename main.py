@@ -585,7 +585,7 @@ def run():
             language=safe_str(data.get("language", "")),
             stars=safe_int(data.get("stargazers_count")),
             forks=safe_int(data.get("forks_count")),
-            watchers=safe_int(data.get("subscribers_count") or data.get("watchers_count")),
+            watchers=watchers,
             open_issues=safe_int(data.get("open_issues_count")),
             size_kb=safe_int(data.get("size")),
 
