@@ -30,6 +30,11 @@ jobs:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         run: |
           python main.py run
+      - name: Upload watchlist ZIP (artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: watchlist-pack
+          path: out/watchlist_pack.zip
 
       - name: Commit state (last_watchlist.csv)
         run: |
